@@ -5,9 +5,9 @@
 
 <configuration>
 
-    <settings>
+    <!--<settings>
         <setting name="logImpl" value="STDOUT_LOGGING" />
-    </settings>
+    </settings>-->
 
     <typeAliases>
         <package name="com.kny.crm.settings.domain"/>
