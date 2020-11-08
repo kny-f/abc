@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kny.crm.workbench.dao.ActivityRemarkDao">
+    <!--    删除活动 需要先删除与活动相关的备注   删除多条-->
+    <delete id="delActivityRemark">
+        DELETE FROM tbl_activity_remark WHERE activityId in
+            <foreach collection="array" item="activityId" open="(" close=")" separator=",">
+                #{activityId}
+            </foreach>
+    </delete>
+
+<!--    只删除备注 一次删除一条-->
+    <delete id="delRemark">
+        DELETE FROM tbl_activity_remark
+            WHERE id=#{id}
+    </delete>
+
+
+    <select id="queryRemark" resultType="ActivityRemark">
+        SELECT * FROM tbl_activity_remark
+            WHERE activityId=#{activityId}
+            order by createTime
+    </select>
+
+    <insert id="saveRemark" parameterType="ActivityRemark">
+        INSERT INTO tbl_activity_remark(
+            id,
+            noteContent,
+            createTime,
+            createBy,
+            editFlag,
+            activityId
+        ) VALUES (
+            #{id},
+            #{noteContent},
+            #{createTime},
+            #{createBy},
+            #{editFlag},
+            #{activityId}
+        )
+    </insert>
+
+    <update id="updateRemark" parameterType="ActivityRemark">
+        UPDATE tbl_activity_remark
+            SET noteContent=#{noteContent},
+                editTime=#{editTime},
+                editBy=#{editBy},
+                editFlag=#{editFlag}
+            WHERE id=#{id}
+    </update>
+</mapper>

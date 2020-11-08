@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kny.crm.workbench.dao.TranHistoryDao">
+	<insert id="saveHistory">
+        INSERT INTO tbl_tran_history(
+            id,
+            stage,
+            money,
+            expectedDate,
+            createTime,
+            createBy,
+            tranId
+        ) VALUES (
+            #{id},
+            #{stage},
+            #{money},
+            #{expectedDate},
+            #{createTime},
+            #{createBy},
+            #{tranId}
+        )
+    </insert>
+
+    <select id="queryTranHis" resultType="TranHistory">
+        SELECT * FROM tbl_tran_history
+            WHERE tranId=#{tranId}
+    </select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

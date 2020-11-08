@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kny.crm.workbench.dao.ActivityDao">
+
+    <insert id="saveActivity" parameterType="Activity">
+        INSERT INTO tbl_activity (id,owner,name,startDate,endDate,cost,description,createTime,createBy)
+            values (#{id},#{owner},#{name},#{startDate},#{endDate},#{cost},#{description},#{createTime},#{createBy})
+    </insert>
+
+    <delete id="delActivityList">
+        DELETE FROM tbl_activity WHERE id in
+        <foreach collection="array" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </delete>
+
+    <update id="updateActivity" parameterType="Activity">
+        update  tbl_activity set owner=#{owner},name=#{name},
+        startDate=#{startDate},endDate=#{endDate},cost=#{cost},description=#{description},
+        editTime=#{editTime},editBy=#{editBy}
+		where id=#{id} /*注意：如果不过滤的话整张表所选中的列的字段值都将更新*/
+    </update>
+
+    <select id="queryActivity" resultType="Activity">
+        SELECT * FROM tbl_activity
+            WHERE id=#{id}
+    </select>
+
+    <select id="queryActByName" resultType="Activity">
+        SELECT a.id,a.name,u.name as 'owner',a.startDate,a.endDate FROM tbl_activity a
+            join tbl_user u
+            on a.owner=u.id
+            WHERE a.name LIKE CONCAT('%',#{name},'%') and a.id not in(
+                SELECT activityId FROM tbl_clue_activity_relation
+                    WHERE clueId=#{clueId}
+            )
+    </select>
+
+<!--    先过滤 在连接-->
+    <select id="queryLikeAct" resultType="Activity">
+        SELECT a.id,a.name,u.name as 'owner',a.startDate,a.endDate FROM tbl_activity a
+            join tbl_user u
+            on a.owner=u.id
+            WHERE a.name LIKE CONCAT('%',#{name},'%')
+    </select>
+
+    <select id="totalConditionActivity" resultType="int">
+        SELECT COUNT(*) FROM
+            tbl_activity a
+            join tbl_user u
+            on a.owner=u.id
+            <where>
+                <if test="name != '' and name != null">
+                    a.name like CONCAT('%',#{name},'%')
+                </if>
+                <if test="owner != '' and owner != null">
+                    and u.name like CONCAT('%',#{owner},'%')
+                </if>
+                <if test="startTime != '' and startTime != null">
+                    and a.startDate &gt;= #{startTime}
+                </if>
+                <if test="endTime != '' and endTime != null">
+                    and a.endTime &lt;= #{endTime}
+                </if>
+            </where>
+    </select>
+
+    <select id="pageList" resultType="Activity">
+        SELECT a.id,u.name as "owner",a.name,a.startDate,a.endDate FROM
+        tbl_activity a
+        join tbl_user u
+        on a.owner=u.id
+        <where>
+            <if test="name != '' and name != null">
+                a.name like CONCAT('%',#{name},'%')
+            </if>
+            <if test="owner != '' and owner != null">
+                and u.name like CONCAT('%',#{owner},'%')
+            </if>
+            <if test="startTime != '' and startTime != null">
+                and a.startDate &gt;= #{startTime}
+            </if>
+            <if test="endTime != '' and endTime != null">
+                and a.endTime &lt;= #{endTime}
+            </if>
+        </where>
+        order by a.createTime desc
+
+    </select>
+</mapper>

@@ -1,0 +1,19 @@
+add/create-*    添加操作  ---->   请求路径 save-*
+update/edit-*   修改      ---->   请求路径 update-*
+del-*           删除      ---->   请求路径 del-*
+search-*        查找      ---->   请求路径 query
+
+show-*  显示从后端接收的数据
+
+
+前端使用 ：html css js jquery bootstrap框架..
+后端 ssm
+数据库 sqlServer
+
+分页查询使用 PageHelper
+
+一个controller对应一个模块  一个dao接口对应一个mapper文件和一张表  一个业务类对应一个模块内相近的操作
+
+涉及到数据字典表的表 我们存储的是数据字典的value  因此查询的时候要关联上数据字典表
+因为数据字典的value列与text列字段值一样 因此我在这个项目中查询的时候忘记关联了
+                                                                -------- 今天闲来无事 想起来这么个事儿了  但是   我懒得改

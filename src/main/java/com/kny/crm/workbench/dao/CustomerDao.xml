@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.kny.crm.workbench.dao.CustomerDao">
+
+    <select id="queryByName" resultType="Customer">
+        SELECT * FROM tbl_customer
+            WHERE name=#{name}
+    </select>
+
+    <select id="queryLikeName" resultType="string">
+        SELECT name FROM tbl_customer
+            WHERE name like CONCAT('%',#{name},'%')
+    </select>
+
+    <insert id="saveCustomer">
+        INSERT INTO tbl_customer(
+            id,
+            owner,
+            name,
+            website,
+            phone,
+            createBy,
+            createTime,
+            editBy,
+            editTime,
+            contactSummary,
+            nextContactTime,
+            description,
+            address
+        ) VALUES (
+            #{id},
+            #{owner},
+            #{name},
+            #{website},
+            #{phone},
+            #{createBy},
+            #{createTime},
+            #{editBy},
+            #{editTime},
+            #{contactSummary},
+            #{nextContactTime},
+            #{description},
+            #{address}
+        )
+    </insert>
+  	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
